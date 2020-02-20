@@ -1,0 +1,1 @@
+python algo-biblio.py a_example.txt; python algo-biblio.py b_read_on.txt; python algo-biblio.py c_incunabula.txt; python algo-biblio.py d_tough_choices.txt; python algo-biblio.py e_so_many_books.txt; python algo-biblio.py f_libraries_of_the_world.txt

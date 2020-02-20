@@ -10,8 +10,33 @@ tiempos_registro = {}
 
 in_file = 'input_data/' + sys.argv[1]
 out_file = 'output_data/' + sys.argv[1]
-
+print(in_file)
 books, libraries, days = parse(in_file)
+
+
+
+
+
+def mejor_biblio(libraries, scanned):
+    puntuaciones = []
+    best_library = libraries[0]
+    rest = []
+    best_score = 0
+    for library in libraries[1:]:
+        score = library.getScore(scanned)
+        if score > best_score:
+            best_score = score
+            best_library = library
+        else:
+            rest.append(library)
+        
+    return best_library, rest
+ 
+    # puntuaciones = list(map(calcular_puntuacion, libraries)).sort()
+
+    # return puntuaciones[-1]
+
+
 
 
 
@@ -34,12 +59,14 @@ def orden_libs_fn(l1, l2):
                 return 1
 
 # hay que registrar primero las bibliotecas que tardan menos en 'registrarse'
-total_libraries = sorted(libraries, key=functools.cmp_to_key(orden_libs_fn))
 
 salida = []
-nbooks = 30000
-for library in total_libraries:
-    salida.append((library, library.coge_libros(nbooks)))
+libros_ya_escaneados = []
+while len(libraries) > 0:
+    best_lib, libraries = mejor_biblio(libraries, libros_ya_escaneados)
+    libros = best_lib.scan_books()
+    libros_ya_escaneados = list(set(libros + libros_ya_escaneados))
+    salida.append((best_lib, libros))
 
 escribir_resultado(salida, out_file)
 
