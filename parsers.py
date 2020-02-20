@@ -1,4 +1,4 @@
-
+from clases import *
 
 process = lambda l: list(map(int, l.split()))
 
@@ -6,38 +6,52 @@ def parse(file):
     with open(file, 'r') as f:
         lines_raw = f.readlines()
     lines = list(map(process, lines_raw))
-    info = {}
 
-    info['total_books'] = lines[0][0]
-    info['total_libraries'] = lines[0][1]
-    info['total_days'] = lines[0][2]
+    total_days = lines[0][2]
 
-    info['books'] = {}
+    books = []
     for idx, score in enumerate(lines[1]):
-        info['books'][idx] = score
-
-    info['libraries'] = {}
+        # info['books'][idx] = score
+        book = Book(idx, score)
+        books.append(book)
+    
+    libraries = []
     line_ix = 2
     library_idx = 0
     while line_ix < len(lines):
         if len(lines[line_ix]) == 0:
             break
-        print('line_ix', line_ix)
         _, treg, rate = lines[line_ix]
 
         line_ix += 1
 
-        books = lines[line_ix]
-        info['libraries'][library_idx] = {
-            'treg': treg,
-            'rate': rate,
-            'books': books}
+        books_idx = lines[line_ix]
+        books_ = [books[ix] for ix in books_idx]
+        library = Library(library_idx, books_, treg, rate)
+        libraries.append(library)
+        # info['libraries'][library_idx] = {
+        #     'treg': treg,
+        #     'rate': rate,
+        #     'books': books}
         line_ix += 1
         library_idx += 1
 
 
-    return info['books'], info['libraries'], info['total_days']
+    return books, libraries, total_days
 
+
+
+def escribir_resultado(salida, filename='output.txt'):
+    output = open(filename, 'w')
+    salida_f = list(filter(lambda x: len(x[1]) > 0, salida))
+    output.write(f'{len(salida_f)}\n')
+    for library, books in salida_f:
+        output.write(f'{library.id} {len(books)}\n')
+        for book in books:
+            output.write(str(book.id) + ' ')
+        output.write('\n')
+
+    output.close()
 
 
 if __name__ == '__main__':
