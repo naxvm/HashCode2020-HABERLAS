@@ -23,13 +23,14 @@ class Library:
 
 
     def getScore(self, scanned_books):
-        self.new_books = list(filter(lambda x: x not in scanned_books, self.new_books))
+        if scanned_books is not None:
+            self.new_books = list(filter(lambda x: x not in scanned_books, self.new_books))
 
         s1 = np.sum([b.score for b in self.new_books])
         s2 = self.rate
         s3 = self.treg
 
-        return s1 * s2 / s3
+        return s1 * np.sqrt(s2 / s3)
 
 
     def scan_books(self):
@@ -51,6 +52,6 @@ class Library:
         #     # print('antes', self.books)
         #     sbooks.append(self.books.pop(idx-1))
         #     # print('despues', self.books)
-        
+
 
         # return sbooks
