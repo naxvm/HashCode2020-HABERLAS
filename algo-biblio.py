@@ -81,7 +81,7 @@ def orden_libs_fn(l1, l2):
 salida = []
 curr_days = 0
 libros_ya_escaneados = set()
-while len(libraries) > 0 or curr_days <= days:
+while len(libraries) > 0 and curr_days <= days:
     print('=====================')
     init = time.time()
     best_lib, libraries = mejor_biblio(libraries, libros_ya_escaneados)

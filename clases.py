@@ -30,7 +30,7 @@ class Library:
         s2 = self.rate
         s3 = self.treg
 
-        return s1 * np.sqrt(s2 / s3)
+        return s1 * s2**2
 
 
     def scan_books(self):
